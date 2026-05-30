@@ -17,6 +17,7 @@
             padding: 0;
             color: #4a4a4a;
             user-select: none;
+            overflow-x: hidden;
         }
 
         /* Barra de Navegação Fixa no Topo */
@@ -53,14 +54,13 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 80px 20px 40px 20px;
+            padding: 100px 20px 40px 20px;
             box-sizing: border-box;
         }
 
-        /* Cor de fundo alternada para dar efeito de seções */
         #home { background-color: #ffdeeb; }
         #about { background-color: #fff0f5; border-top: 3px dashed #4a4a4a; }
-        #blog { background-color: #f7e1ed; border-top: 3px dashed #4a4a4a; }
+        #blog { background-color: #f7e1ed; border-top: 3px dashed #4a4a4a; overflow: hidden; }
 
         h1, h2 {
             text-shadow: 2px 2px 0px white;
@@ -126,7 +126,6 @@
 
         .tab-content.active { display: flex; }
 
-        /* Fita Cassete */
         .cassette {
             background-color: #4facfe;
             border: 3px solid #4a4a4a;
@@ -169,7 +168,6 @@
             border: 4px dashed #fff;
         }
 
-        /* PC de Tubo */
         .crt-monitor {
             background-color: #dedede;
             border: 4px solid #4a4a4a;
@@ -206,7 +204,6 @@
             right: 25px;
         }
 
-        /* Toca CDs */
         .discman {
             background-color: #cdb4db;
             border: 4px solid #4a4a4a;
@@ -251,7 +248,6 @@
             color: #112244;
         }
 
-        /* Controles */
         .controls { display: flex; gap: 15px; margin-top: 10px; }
         .btn {
             background-color: #fff;
@@ -266,13 +262,12 @@
         }
         .btn:active { transform: translate(3px, 3px); box-shadow: 0px 0px 0px; }
 
-        /* Animações */
         .playing .wheel { animation: spin 2.5s linear infinite; }
         .playing .cd-disc { animation: spin 0.8s linear infinite; }
         .playing .crt-button { background-color: #33ff33; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- ESTILO DO CONTEÚDO DO BLOG / PORTFÓLIO --- */
+        /* --- ESTILO DO SOBRE MIM --- */
         .card-container {
             background-color: white;
             border: 3px solid #4a4a4a;
@@ -283,66 +278,139 @@
             line-height: 1.6;
         }
 
-        /* Grade de Posts do Blog */
-        .blog-grid {
+        /* --- ESTILO DO CATALOGO DE DISCOS COM ROLAGEM LATERAL --- */
+        /* Container que permite deslizar para o lado */
+        .album-scroll-wrapper {
+            width: 100vw;
+            max-width: 100%;
+            overflow-x: auto;
+            padding: 40px 0;
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 800px;
+            justify-content: flex-start;
+            scrollbar-width: none; /* Esconde barra no Firefox */
+        }
+        
+        .album-scroll-wrapper::-webkit-scrollbar {
+            display: none; /* Esconde barra no Chrome/Edge */
         }
 
-        .blog-post {
-            background-color: white;
-            border: 3px solid #4a4a4a;
-            border-radius: 10px;
-            padding: 20px;
+        .album-track {
+            display: flex;
+            gap: 100px; /* Espaço entre os discos */
+            padding-left: 10vw; /* Espaço inicial */
+            padding-right: 10vw; /* Espaço final */
+        }
+
+        /* Bloco de cada Post/Disco */
+        .album-item {
+            display: flex;
+            flex-direction: column;
+            width: 260px;
+        }
+
+        /* O truque do vinil deslizar */
+        .album-interactive-zone {
+            position: relative;
             width: 240px;
-            box-shadow: 4px 4px 0px #4a4a4a;
-            transition: 0.2s;
+            height: 240px;
+            cursor: pointer;
         }
 
-        .blog-post:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px #4a4a4a;
+        /* Capa do disco (fica por cima) */
+        .album-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 240px;
+            border-radius: 4px;
+            border: 3px solid #4a4a4a;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5; /* Fica na frente */
+            box-sizing: border-box;
+            color: white;
+            text-align: center;
+            padding: 20px;
         }
 
-        .post-date {
-            font-size: 11px;
-            color: #888;
-            display: block;
-            margin-bottom: 8px;
+        /* Capas com cores diferentes inspiradas na imagem */
+        .cover-1 { background-color: #222; }
+        .cover-2 { background-color: #f3f3f3; color: #4a4a4a !important; }
+        .cover-3 { background-color: #c05c46; }
+
+        /* O Disco de Vinil Preto (escondido atrás) */
+        .vinyl-record {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 220px;
+            height: 220px;
+            background-color: #1a1a1a;
+            border-radius: 50%;
+            z-index: 4; /* Fica atrás da capa */
+            transition: transform 0.4s ease-out; /* Animação suave para sair */
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #333 4%, #111 5%, #1a1a1a 20%, #111 40%, #1a1a1a 60%, #111 80%, #222 100%);
         }
 
-        .post-title {
+        .vinyl-center {
+            width: 45px;
+            height: 45px;
+            background-color: #fff;
+            border-radius: 50%;
+            border: 2px dashed #4a4a4a;
+        }
+
+        /* QUANDO PASSA O MOUSE: O vinil desliza para a direita! */
+        .album-interactive-zone:hover .vinyl-record {
+            transform: translateX(100px) rotate(90deg);
+        }
+
+        /* Textos do post abaixo do disco */
+        .album-meta {
+            margin-top: 20px;
+            width: 240px;
+        }
+
+        .album-title {
+            font-size: 18px;
             font-weight: bold;
-            font-size: 16px;
-            margin: 0 0 10px 0;
-            color: #f0a8c4;
+            margin: 0 0 5px 0;
+        }
+
+        .album-description {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+            margin: 0;
         }
     </style>
 </head>
 <body>
 
-    <!-- Menu Superior para Navegar e Rolar a Tela -->
+    <!-- Menu Superior -->
     <nav class="navbar">
         <a href="#home">♫ PLAYER</a>
         <a href="#about">♡ SOBRE MIM</a>
         <a href="#blog">📝 MEU BLOG</a>
     </nav>
 
-    <!-- SEÇÃO 1: PLAYER (HOME) -->
+    <!-- SEÇÃO 1: PLAYER -->
     <section id="home" class="section">
         <h1>Meu Cantinho Retrô ♫</h1>
-
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('cassette-tab')"> Cassete</button>
+            <button class="tab-btn active" onclick="switchTab('cassette-tab')">📼 Fita</button>
             <button class="tab-btn" onclick="switchTab('crt-tab')">📺 PC de Tubo</button>
             <button class="tab-btn" onclick="switchTab('cd-tab')">💿 Toca CDs</button>
         </div>
-
         <div class="player-container" id="player">
-            <!-- ABA 1: CASSETE -->
             <div id="cassette-tab" class="tab-content active">
                 <div class="cassette">
                     <div class="cassette-label">
@@ -351,8 +419,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- ABA 2: PC TUBO -->
             <div id="crt-tab" class="tab-content">
                 <div class="crt-monitor">
                     <div class="crt-screen">
@@ -362,15 +428,12 @@
                     <div class="crt-button"></div>
                 </div>
             </div>
-
-            <!-- ABA 3: TOCA-CDS -->
             <div id="cd-tab" class="tab-content">
                 <div class="discman">
                     <div class="discman-window"><div class="cd-disc"></div></div>
                     <div class="discman-screen" id="cd-screen-text">OSCAR TAO</div>
                 </div>
             </div>
-
             <div class="controls">
                 <button class="btn" id="playBtn" onclick="togglePlay()">▶ PLAY</button>
             </div>
@@ -381,42 +444,79 @@
     <section id="about" class="section">
         <h2>♡ Sobre Mim</h2>
         <div class="card-container">
-            <p>Olá! Bem-vindo ao meu mini projeto pessoal. Criei esse espaço para juntar as coisas que eu mais gosto: estética retrô, design pixel-art e programação fofa.</p>
-            <p>Esse site foi feito com muito carinho e dedicação direto no meu GitHub. Use o menu no topo para navegar ou simplesmente role a tela para ler os meus posts abaixo!</p>
+            <p>Olá! Bem-vindo ao meu projeto pessoal. Criei esse espaço inspirado em grandes designers para testar interações fofas e layouts diferentes.</p>
+            <p>Role a tela mais um pouco para baixo e use a rodinha do mouse para navegar para o lado no meu catálogo de discos interativo!</p>
         </div>
     </section>
 
-    <!-- SEÇÃO 3: BLOG -->
+    <!-- SEÇÃO 3: BLOG (Com efeito igual à imagem!) -->
     <section id="blog" class="section">
-        <h2>📝 Meu Blog</h2>
-        <div class="blog-grid">
-            
-            <!-- Post 1 -->
-            <div class="blog-post">
-                <span class="post-date">30 de Maio, 2026</span>
-                <p class="post-title">Primeiro Post!</p>
-                <p style="font-size: 13px; margin: 0;">Hoje coloquei meu primeiro site oficial no ar usando o GitHub Pages. O TDAH tentou me parar, mas eu consegui!</p>
-            </div>
+        <h2>📝 Meu Blog (Catálogo de Discos)</h2>
+        
+        <div class="album-scroll-wrapper" id="albumWrapper">
+            <div class="album-track">
+                
+                <!-- DISCO 1 (Post 1) -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-1">
+                            <h3 style="font-size: 24px; margin: 0; font-family: sans-serif; font-weight: 900; letter-spacing: -1px;">papers 📄</h3>
+                        </div>
+                        <div class="vinyl-record">
+                            <div class="vinyl-center"></div>
+                        </div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Primeiro Post!</p>
+                        <p class="album-description">Coloquei meu site oficial no ar usando o GitHub Pages. O TDAH tentou me parar, mas eu consegui!</p>
+                    </div>
+                </div>
 
-            <!-- Post 2 -->
-            <div class="blog-post">
-                <span class="post-date">29 de Maio, 2026</span>
-                <p class="post-title">Estética Retrô</p>
-                <p style="font-size: 13px; margin: 0;">Sou apaixonada por coisas antigas: fitas cassete, computadores de tubo e vinis. Acho que o design antigo tinha muito mais personalidade.</p>
-            </div>
+                <!-- DISCO 2 (Post 2) -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-2">
+                            <h3 style="font-size: 28px; margin: 0; font-weight: bold; font-family: serif;">ew.</h3>
+                        </div>
+                        <div class="vinyl-record">
+                            <div class="vinyl-center"></div>
+                        </div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Estética Retrô</p>
+                        <p class="album-description">Sou apaixonada por coisas vintage: fitas cassete, computadores de tubo e vinis que deslizam da capa.</p>
+                    </div>
+                </div>
 
-            <!-- Post 3 -->
-            <div class="blog-post">
-                <span class="post-date">Em breve...</span>
-                <p class="post-title">Novas Ideias</p>
-                <p style="font-size: 13px; margin: 0;">Aqui eu vou escrever sobre novas músicas, inspirações de design como o portfólio do Oscar Tao e muito mais.</p>
-            </div>
+                <!-- DISCO 3 (Post 3) -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-3">
+                            <h3 style="font-size: 26px; margin: 0; font-family: 'Georgia', serif; font-weight: normal; letter-spacing: 2px;">TOVA</h3>
+                        </div>
+                        <div class="vinyl-record">
+                            <div class="vinyl-center"></div>
+                        </div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Novas Inspirações</p>
+                        <p class="album-description">Estudando animações em portfólios incríveis como o do Oscar Tao e do Eugene Wan para deixar meu cantinho perfeito.</p>
+                    </div>
+                </div>
 
+            </div>
         </div>
     </section>
 
     <script>
         let isPlaying = false;
+
+        // Script para fazer a rodinha do mouse rolar PARA O LADO na seção de discos
+        const scrollContainer = document.getElementById('albumWrapper');
+        scrollContainer.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            scrollContainer.scrollLeft += evt.deltaY;
+        });
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
