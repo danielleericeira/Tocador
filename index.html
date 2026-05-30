@@ -1,1 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Cantinho Retrô ♡</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+        :root {
+            --pink: #ff85a2;
+            --pink-light: #ffdeeb;
+            --pink-pale: #fff0f5;
+            --dark: #1a1a1a;
+            --mid: #4a4a4a;
+            --light: #f5f5f5;
+            --white: #ffffff;
+            --mono: 'Space Mono', monospace;
+            --serif: 'Instrument Serif', serif;
+            --sans: 'DM Sans', sans-serif;
+        }
+
+        /* TRANSFORMA A ROLAGEM GLOBAL EM HORIZONTAL */
+        html, body {
+            overflow-y: hidden;
+            overflow-x: auto;
+            height: 100vh;
+            scrollbar-width: none;
+        }
+        html, body::-webkit-scrollbar { display: none; }
+
+        body {
+            background: var(--white);
+            font-family: var(--sans);
+            color: var(--dark);
+            cursor: none;
+            display: flex;
+            width: 400vw;
+        }
+
+        /* CURSOR CUSTOMIZADO */
+        .cursor {
+            width: 10px; height: 10px;
+            background: var(--dark);
+            border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, background 0.2s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            width: 36px; height: 36px;
+            border: 1.5px solid var(--dark);
+            border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.18s cubic-bezier(0.25,1,0.5,1), width 0.25s ease, height 0.25s ease, opacity 0.2s ease;
+            mix-blend-mode: difference;
+        }
+        body:hover .cursor-ring { opacity: 1; }
+        .cursor-ring.hovering { width: 56px; height: 56px; }
+
+        /* HEADER INTERATIVO */
+        .header-bar {
+            position: fixed; top: 0; left: 0; width: 100vw;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 44px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 500;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 14px; }
+        .logo-icon {
+            width: 38px; height: 38px;
+            background: var(--dark);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            color: var(--white);
+        }
+        .logo-title { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--dark); letter-spacing: -0.3px; }
+        .logo-subtitle { font-size: 11px; color: var(--pink); font-weight: 500; letter-spacing: 0.3px; margin-top: 1px; }
+
+        /* NAV DROPDOWN */
+        .nav-dropdown-container { position: relative; }
+        .nav-btn {
+            background: transparent;
+            border: 1.5px solid rgba(0,0,0,0.12);
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex; align-items: center; gap: 10px;
+            cursor: none;
+            transition: border-color 0.2s, background 0.2s;
+            letter-spacing: -0.3px;
+        }
+        .nav-btn:hover { background: var(--light); border-color: rgba(0,0,0,0.2); }
+        .nav-btn .tag {
+            background: var(--dark); color: white;
+            font-size: 10px; padding: 2px 8px; border-radius: 20px;
+        }
+        .dropdown-content {
+            display: none; position: absolute; right: 0; top: calc(100% + 8px);
+            background: white;
+            min-width: 180px;
+            border: 1.5px solid rgba(0,0,0,0.1);
+            border-radius: 14px;
+            padding: 6px;
+            z-index: 101;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            animation: dropIn 0.2s cubic-bezier(0.25,1,0.5,1);
+        }
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .nav-dropdown-container:hover .dropdown-content { display: block; }
+        .dropdown-content a, .dropdown-content button {
+            display: block; width: 100%;
+            font-family: var(--mono); font-size: 12px; font-weight: 700;
+            color: var(--dark);
+            padding: 9px 14px;
+            text-decoration: none; background: none; border: none;
+            text-align: left; border-radius: 8px;
+            cursor: none;
+            transition: background 0.15s, color 0.15s;
+        }
+        .dropdown-content a:hover, .dropdown-content button:hover {
+            background: var(--pink-pale); color: var(--pink);
+        }
+
+        /* CONFIGURAÇÃO HORIZONTAL */
+        .page-section {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 120px 40px 80px;
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+        }
+
+        /* HERO */
+        #home {
+            background: var(--pink-light);
+            position: relative;
+        }
+        #home::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(255,133,162,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,133,162,0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .hero-label {
+            font-family: var(--mono); font-size: 11px; font-weight: 700;
+            letter-spacing: 2px; color: var(--pink); text-transform: uppercase;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+        }
+        .hero-label::before, .hero-label::after {
+            content: ''; flex: 1; height: 1px; background: var(--pink); opacity: 0.4;
+            max-width: 40px;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: clamp(48px, 8vw, 80px);
+            font-style: italic;
+            letter-spacing: -2px;
+            line-height: 0.95;
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+        .hero-title em { font-style: normal; color: var(--pink); }
+
+        .hero-sub {
+            font-family: var(--mono); font-size: 12px; color: #888;
+            margin-bottom: 48px; letter-spacing: 0.5px;
+        }
+
+        /* PLAYER COMPONENTS */
+        .tabs {
+            display: flex; gap: 2px; margin-bottom: -2px; z-index: 1; position: relative;
+        }
+        .tab-btn {
+            background: rgba(255,255,255,0.5);
+            border: 2px solid var(--dark); border-bottom: none;
+            padding: 8px 16px;
+            cursor: none;
+            font-family: var(--mono); font-weight: 700;
+            border-radius: 10px 10px 0 0; color: var(--mid); font-size: 12px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .tab-btn.active { background: var(--pink-pale); color: var(--dark); padding-bottom: 14px; }
+        .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.8); }
+
+        .player-container {
+            background: var(--pink-pale);
+            border: 2px solid var(--dark);
+            border-radius: 0 16px 16px 16px;
+            padding: 30px;
+            width: 420px; height: 300px;
+            box-shadow: 5px 5px 0 var(--dark);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between;
+            position: relative;
+            transition: box-shadow 0.2s;
+        }
+        .player-container:hover { box-shadow: 7px 7px 0 var(--dark); }
+
+        .tab-content { display: none; width: 100%; height: 80%; flex-direction: column; align-items: center; justify-content: center; }
+        .tab-content.active { display: flex; }
+
+        .cassette {
+            background: #4facfe; border: 2.5px solid var(--dark);
+            width: 240px; height: 135px; border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: inset -4px -4px 0 rgba(0,0,0,0.15), 3px 3px 0 var(--dark);
+        }
+        .cassette-label {
+            background: white; border: 2px solid var(--dark);
+            width: 175px; height: 80px; border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-around;
+            padding: 6px;
+        }
+        .cassette-name { font-family: var(--mono); font-size: 11px; font-weight: 700; }
+        .cassette-wheels { display: flex; gap: 40px; background: #e8e8e8; padding: 4px 14px; border-radius: 20px; border: 2px solid var(--dark); }
+        .wheel { width: 24px; height: 24px; background: var(--dark); border-radius: 50%; border: 3px dashed white; transition: transform 1s linear; }
+
+        .crt-monitor {
+            background: #d8d8d8; border: 3.5px solid var(--dark);
+            border-radius: 20px 20px 10px 10px; padding: 14px 14px 24px;
+            width: 250px;
+            box-shadow: inset -4px -4px 0 #b0b0b0, 3px 3px 0 var(--dark);
+            position: relative;
+        }
+        .crt-screen {
+            background: #0a1a0c; border: 3px solid #6a6a6a;
+            border-radius: 14px; height: 108px;
+            color: #33ff33; font-size: 11px; font-weight: 700;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 8px rgba(51,255,51,0.2);
+            font-family: var(--mono); gap: 6px; overflow: hidden;
+        }
+        .crt-scanline {
+            position: absolute; inset: 0; border-radius: 12px;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+            pointer-events: none;
+        }
+        .crt-button { width: 11px; height: 11px; background: #ff4444; border: 2px solid var(--dark); border-radius: 50%; position: absolute; bottom: 6px; right: 22px; transition: background 0.3s; }
+
+        .discman {
+            background: #cdb4db; border: 3.5px solid var(--dark);
+            width: 180px; height: 180px; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; box-shadow: 3px 3px 0 var(--dark);
+        }
+        .discman-window { width: 115px; height: 115px; background: rgba(255,255,255,0.2); border: 2.5px solid var(--dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .cd-disc {
+            width: 93px; height: 93px;
+            background: conic-gradient(#e0aaff, #9d4edd, #c77dff, #e0aaff, #fff 45%, #e0aaff 50%, #9d4edd, #c77dff, #e0aaff);
+            border: 2px solid var(--dark); border-radius: 50%;
+            box-shadow: inset 0 0 0 20px rgba(255,255,255,0.1), inset 0 0 0 22px rgba(255,255,255,0.05);
+        }
+        .cd-hole { width: 14px; height: 14px; background: white; border: 2px solid var(--dark); border-radius: 50%; position: absolute; }
+        .discman-screen { background: #aaccff; border: 2px solid var(--dark); font-size: 9px; font-weight: 700; padding: 2px 8px; position: absolute; bottom: 9px; border-radius: 4px; color: #112244; font-family: var(--mono); letter-spacing: 1px; }
+
+        .controls { display: flex; gap: 12px; margin-top: 8px; }
+        .btn {
+            background: white; border: 2px solid var(--dark);
+            padding: 9px 22px; cursor: none; font-weight: 700;
+            font-size: 13px; font-family: var(--mono);
+            border-radius: 8px; box-shadow: 3px 3px 0 var(--dark);
+            transition: transform 0.1s, box-shadow 0.1s;
+            letter-spacing: -0.3px;
+        }
+        .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--dark); }
+        .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--dark); }
+
+        .playing .wheel { animation: spin 2s linear infinite; }
+        .playing .cd-disc { animation: spin 0.7s linear infinite; }
+        .playing .crt-button { background: #33ff33; box-shadow: 0 0 6px #33ff33; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── SEÇÃO SERVIÇOS ── */
+        #services-section { background: var(--dark); color: white; }
+        .services-eyebrow {
+            font-family: var(--mono); font-size: 11px; font-weight: 700;
+            letter-spacing: 3px; color: #666; text-transform: uppercase; margin-bottom: 12px;
+        }
+        .services-heading {
+            font-family: var(--serif); font-style: italic;
+            font-size: clamp(38px, 6vw, 60px);
+            letter-spacing: -1.5px; line-height: 1;
+            margin-bottom: 50px; text-align: center;
+        }
+
+        .services-wrapper { display: flex; align-items: flex-start; justify-content: center; gap: 40px; width: 100%; max-width: 900px; }
+        .invoice-box { position: relative; cursor: none; width: 250px; flex-shrink: 0; transition: transform 0.3s; }
+        .invoice-box:hover { transform: translateY(-4px) rotate(0.5deg); }
+        .invoice-paper {
+            background: #e8e8e8; color: #111;
+            background-image: radial-gradient(#cfcfcf 10%, transparent 11%);
+            background-size: 5px 5px;
+            padding: 24px 20px;
+            font-family: var(--mono);
+            border: 1px solid #bbb;
+            box-shadow: 6px 6px 0 rgba(255,255,255,0.1);
+            border-bottom: 7px dashed #555;
+        }
+        .invoice-paper h3 { margin: 0 0 14px; text-align: center; font-size: 18px; font-weight: 900; }
+        .invoice-row { font-size: 11px; display: flex; justify-content: space-between; margin-bottom: 7px; }
+        .invoice-divider { border: none; border-top: 1px dashed #888; margin: 10px 0; }
+        .invoice-total { font-size: 13px; font-weight: bold; display: flex; justify-content: space-between; }
+
+        .click-badge {
+            position: absolute; top: 25%; left: -26px;
+            background: #e60000; color: white;
+            font-weight: 900; font-size: 9px; padding: 14px 6px; text-align: center;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0; transform: scale(0.4) rotate(-15deg);
+            transition: 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10;
+        }
+        .invoice-box:hover .click-badge { opacity: 1; transform: scale(1) rotate(0deg); }
+
+        .services-panel {
+            flex: 1; background: #111; border: 1px solid #2a2a2a;
+            border-radius: 14px; padding: 30px;
+            display: none; flex-direction: column; gap: 18px;
+            opacity: 0; transform: translateX(20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .services-panel.panel-active {
+            display: flex; opacity: 1; transform: translateX(0);
+            animation: slideIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .service-item { border-bottom: 1px solid #222; padding-bottom: 16px; }
+        .service-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .service-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; font-family: var(--mono); }
+        .service-item p { font-size: 13px; color: #888; line-height: 1.6; }
+
+        /* ── SEÇÃO DOS VINIS EM LINHA HORIZONTAL ── */
+        #blog { background: #f7e1ed; padding-left: 0; padding-right: 0; }
+        .blog-header { text-align: center; margin-bottom: 10px; }
+        .blog-title {
+            font-family: var(--serif); font-style: italic;
+            font-size: clamp(30px, 5vw, 48px); letter-spacing: -1px;
+            color: var(--dark); text-shadow: 2px 2px 0 white;
+        }
+        .blog-hint { font-family: var(--mono); font-size: 11px; color: #aa7799; margin-top: 8px; letter-spacing: 0.5px; }
+
+        .album-scroll-wrapper {
+            width: 100vw; overflow-x: auto; padding: 30px 0 40px;
+            display: flex; scrollbar-width: none;
+        }
+        .album-scroll-wrapper::-webkit-scrollbar { display: none; }
+        .album-track { display: flex; gap: 110px; padding-left: 6vw; padding-right: 25vw; }
+
+        .album-item { display: flex; flex-direction: column; width: 240px; }
+        .album-interactive-zone { position: relative; width: 240px; height: 240px; cursor: none; }
+
+        .album-cover {
+            position: absolute; top: 0; left: 0;
+            width: 240px; height: 240px;
+            border-radius: 4px; border: 2px solid var(--dark);
+            box-shadow: 4px 4px 0 var(--dark);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 5; padding: 20px; text-align: center;
+            overflow: hidden; transition: box-shadow 0.2s;
+            background-size: cover; background-position: center;
+        }
+        .album-cover::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .album-interactive-zone:hover .album-cover { box-shadow: 6px 6px 0 var(--dark); }
+
+        .vinyl-record {
+            position: absolute; top: 8px; left: 8px;
+            width: 224px; height: 224px;
+            border-radius: 50%; z-index: 4;
+            background: radial-gradient(circle, #3a3a3a 4%, #111 5%, #1a1a1a 20%, #111 40%, #1a1a1a 60%, #111 80%, #222 100%);
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .vinyl-center { width: 42px; height: 42px; background: white; border-radius: 50%; border: 2px dashed #4a4a4a; }
+        .album-interactive-zone:hover .vinyl-record { transform: translateX(115px) rotate(110deg); }
+
+        .album-meta { margin-top: 18px; }
+        .album-title { font-family: var(--mono); font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .album-description { font-size: 12px; color: #888; line-height: 1.5; font-family: var(--sans); }
+
+        .cover-1 { background: #1c1c1c; color: white; }
+        .cover-2 { background: #f3f3f3; color: var(--dark); }
+        .cover-3 { background: #b54434; color: white; }
+        .cover-4 { background: #262a2b; color: #a4b4b7; }
+        .cover-5 { background: #2b303c; color: #33ff33; }
+        .cover-6 { background: #383735; color: white; }
+
+        .mini-game-screen {
+            width: 148px; height: 88px; background: #0a0a0a; border: 2.5px solid #888;
+            border-radius: 6px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            font-size: 8px; color: white; gap: 5px; font-family: var(--mono);
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+        }
+
+        /* ── CONECTE ── */
+        #connect-section { background: white; border-top: 1px solid #eaeaea; }
+        .connect-eyebrow {
+            font-family: var(--mono); font-size: 11px; font-weight: 700;
+            letter-spacing: 3px; color: #bbb; text-transform: uppercase; margin-bottom: 16px;
+        }
+        .connect-heading {
+            font-family: var(--serif); font-style: italic;
+            font-size: clamp(36px, 6vw, 60px); letter-spacing: -2px; margin-bottom: 40px;
+        }
+
+        .ticket-container { position: relative; width: 520px; height: 170px; display: flex; gap: 0; cursor: none; }
+        .ticket-part {
+            background: #f5f5f5; color: var(--dark); border: 2px solid var(--dark); padding: 20px;
+            transition: transform 0.4s cubic-bezier(0.25,1,0.5,1), box-shadow 0.4s;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.8) 10%, transparent 15%); background-size: 7px 7px;
+        }
+        .ticket-left { width: 360px; border-radius: 12px 0 0 12px; border-right: 3px dashed #bbb; display: flex; flex-direction: column; justify-content: space-between; }
+        .ticket-right { width: 158px; border-radius: 0 12px 12px 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+        .ticket-container:hover .ticket-left { transform: translateX(-20px) rotate(-1.5deg); box-shadow: -4px 4px 0 var(--dark); }
+        .ticket-container:hover .ticket-right { transform: translateX(20px) rotate(1.5deg); box-shadow: 4px 4px 0 var(--dark); }
+
+        .diga-oi-badge {
+            position: absolute; right: -28px; top: 30%;
+            background: #e60000; color: white; font-weight: 900; font-size: 9px;
+            padding: 14px 8px; text-align: center;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0; transform: scale(0.5) rotate(-10deg); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10;
+            font-family: var(--mono);
+        }
+        .ticket-container:hover .diga-oi-badge { opacity: 1; transform: scale(1) rotate(0deg); }
+
+        /* MODAL SOBRE MIM */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(12px);
+            z-index: 600; display: none; align-items: center; justify-content: center;
+        }
+        .modal-overlay.modal-open { display: flex; animation: fadeIn 0.25s ease; }
+
+        .about-card {
+            background: white; border-radius: 20px; padding: 44px;
+            max-width: 780px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative; display: flex; gap: 40px; align-items: center;
+            animation: cardIn 0.3s cubic-bezier(0.25,1,0.5,1);
+        }
+        .close-btn {
+            position: absolute; top: 18px; right: 18px;
+            background: #f0f0f0; border: none; width: 34px; height: 34px;
+            border-radius: 50%; cursor: none; font-size: 16px;
+            display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+        }
+        .close-btn:hover { background: #e0e0e0; }
+        .about-title { font-family: var(--serif); font-style: italic; font-size: 32px; letter-spacing: -1px; line-height: 1.2; margin-bottom: 18px; }
+        .about-body { font-size: 14px; color: #666; line-height: 1.7; }
+        .profile-pic { width: 170px; height: 170px; border-radius: 50%; object-fit: cover; border: 2.5px solid #eaeaea; flex-shrink: 0; }
+
+        /* FORMULÁRIO */
+        .form-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 700; display: none; align-items: center; justify-content: center; }
+        .form-overlay.form-open { display: flex; animation: fadeIn 0.2s ease; }
+        .form-window { width: 580px; max-width: 90%; color: white; padding: 36px; display: flex; flex-column: column; gap: 22px; }
+        .form-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a2a; padding-bottom: 18px; }
+        .form-title { font-family: var(--serif); font-style: italic; font-size: 26px; letter-spacing: -0.8px; }
+        .close-form-btn { background: none; border: 1px solid #444; color: white; padding: 6px 14px; border-radius: 8px; cursor: none; font-family: var(--mono); font-size: 11px; font-weight: 700; transition: background 0.2s; }
+        .close-form-btn:hover { background: #222; }
+        .form-row { display: flex; gap: 18px; }
+        .form-group { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-family: var(--mono); font-size: 10px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group textarea { background: none; border: none; border-bottom: 1px solid #333; padding: 10px 0; color: white; font-size: 15px; font-family: var(--sans); outline: none; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--pink); }
+        .form-group textarea { height: 80px; resize: none; }
+        .send-btn { background: white; color: black; border: none; padding: 14px 30px; border-radius: 30px; font-weight: 700; font-size: 14px; font-family: var(--mono); cursor: none; align-self: flex-start; transition: transform 0.2s, background 0.2s; letter-spacing: -0.3px; }
+        .send-btn:hover { background: var(--pink); color: white; transform: scale(1.03); }
+
+        /* DOTS DE ROLAGEM NO RODAPÉ */
+        .page-indicator {
+            position: fixed; left: 50%; bottom: 24px;
+            transform: translateX(-50%);
+            display: flex; gap: 12px;
+            z-index: 400;
+        }
+        .page-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(0,0,0,0.15); border: 1.5px solid rgba(0,0,0,0.2);
+            transition: background 0.3s, transform 0.3s; cursor: none;
+        }
+        .page-dot.active { background: var(--dark); transform: scale(1.4); }
+        .page-dot.white { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.2); }
+        .page-dot.white.active { background: white; }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- INDICADOR INFERIOR -->
+    <nav class="page-indicator" aria-label="Seções">
+        <a href="#home"><div class="page-dot active" data-section="home"></div></a>
+        <a href="#services-section"><div class="page-dot" data-section="services-section"></div></a>
+        <a href="#blog"><div class="page-dot" data-section="blog"></div></a>
+        <a href="#connect-section"><div class="page-dot" data-section="connect-section"></div></a>
+    </nav>
+
+    <!-- HEADER COM NOVO SÍMBOLO PREMIUM -->
+    <header class="header-bar">
+        <div class="logo-area">
+            <div class="logo-icon">✦</div>
+            <div>
+                <div class="logo-title">Danielle</div>
+                <div class="logo-subtitle">Criativa & Curiosa</div>
+            </div>
+        </div>
+        <div class="nav-dropdown-container">
+            <button class="nav-btn">
+                <span class="tag" id="current-page-label">Casa</span> ▾
+            </button>
+            <div class="dropdown-content">
+                <a href="#home" onclick="updateLabel('Casa')">🏠 Casa</a>
+                <button onclick="openAboutModal()">👤 Sobre Mim</button>
+                <a href="#services-section" onclick="updateLabel('Serviços')">📄 Serviços</a>
+                <a href="#blog" onclick="updateLabel('Catálogo')">🎵 Catálogo</a>
+                <a href="#connect-section" onclick="updateLabel('Conecte')">✈️ Conecte</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SEÇÃO 1: HERO + PLAYER -->
+    <section id="home" class="page-section">
+        <div class="hero-label">✦ meu cantinho digital ✦</div>
+        <h1 class="hero-title">Meu Cantinho<br><em>Retrô</em> ♫</h1>
+        <p class="hero-sub">// blog & música & pensamentos //</p>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('cassette-tab', this)">⏩ Fita</button>
+            <button class="tab-btn" onclick="switchTab('crt-tab', this)">📺 Tubo</button>
+            <button class="tab-btn" onclick="switchTab('cd-tab', this)">💿 CD</button>
+        </div>
+        <div class="player-container" id="player">
+            <div id="cassette-tab" class="tab-content active">
+                <div class="cassette">
+                    <div class="cassette-label">
+                        <span class="cassette-name">EAT N SEE</span>
+                        <div class="cassette-wheels">
+                            <div class="wheel"></div>
+                            <div class="wheel"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="crt-tab" class="tab-content">
+                <div class="crt-monitor">
+                    <div class="crt-screen">
+                        <div class="crt-scanline"></div>
+                        <span style="color: #88ff88; font-size: 10px;">[oscartao.com]</span>
+                        <span id="crt-status" style="color: #33ff33;">&gt; STATUS: IDLE</span>
+                        <span style="color: #555; font-size: 9px;">████████░░ 80%</span>
+                    </div>
+                    <div class="crt-button" id="crt-btn"></div>
+                </div>
+            </div>
+            <div id="cd-tab" class="tab-content">
+                <div class="discman">
+                    <div class="discman-window">
+                        <div class="cd-disc" style="position:relative; display:flex; align-items:center; justify-content:center;">
+                            <div class="cd-hole"></div>
+                        </div>
+                    </div>
+                    <div class="discman-screen" id="cd-screen-text">OSCAR TAO</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn" id="playBtn" onclick="togglePlay()">▶ PLAY</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 2: SERVIÇOS -->
+    <section id="services-section" class="page-section">
+        <p class="services-eyebrow">Serviços</p>
+        <h2 class="services-heading">O que fazemos.</h2>
+        <div class="services-wrapper">
+            <div class="invoice-box" onclick="toggleServicesPanel()">
+                <div class="click-badge">CLICK<br>EU!</div>
+                <div class="invoice-paper">
+                    <h3>papers 📄</h3>
+                    <hr class="invoice-divider">
+                    <div class="invoice-row"><span>WEB DESIGN</span><span>$1.50</span></div>
+                    <div class="invoice-row"><span>LOGO DESIGN</span><span>$0.21</span></div>
+                    <div class="invoice-row"><span>BRANDING</span><span>$4.20</span></div>
+                    <div class="invoice-row"><span>HOSTING</span><span>$0.67</span></div>
+                    <hr class="invoice-divider">
+                    <div class="invoice-total"><span>TOTAL:</span><span>$$$</span></div>
+                </div>
+            </div>
+            <div class="services-panel" id="servicesPanel">
+                <div class="service-item">
+                    <h3>Design de sites</h3>
+                    <p>Sites que desafiam o status quo — experiências digitais marcantes e cheias de personalidade para a sua marca.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Identidade Visual</h3>
+                    <p>Logos e branding que comunicam quem você é antes de dizer uma palavra.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Hospedagem & Lançamento</h3>
+                    <p>Do rascunho ao ar — cuidamos de tudo para que seu projeto esteja online.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 3: CATÁLOGO DE DISCOS -->
+    <section id="blog" class="page-section">
+        <div class="blog-header">
+            <h2 class="blog-title">Catálogo de Pensamentos</h2>
+            <p class="blog-hint">// passe o mouse nos discos • use a rodinha para rolar para o lado //</p>
+        </div>
+        <div class="album-scroll-wrapper" id="albumWrapper">
+            <div class="album-track">
+                
+                <!-- DISCO 1 -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-1">
+                            <h3 style="font-size: 22px; font-weight: 900; font-family: var(--mono);">papers 📄</h3>
+                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Primeiro Post!</p>
+                        <p class="album-description">Site oficial no ar usando GitHub Pages.</p>
+                    </div>
+                </div>
+
+                <!-- DISCO 2 -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-2">
+                            <h3 style="font-size: 28px; font-weight: bold; font-family: var(--serif); font-style: italic;">ew.</h3>
+                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Estética Retrô</p>
+                        <p class="album-description">Apaixonada pela nostalgia do design vintage.</p>
+                    </div>
+                </div>
+
+                <!-- DISCO 3 -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-3">
+                            <h3 style="font-size: 26px; letter-spacing: 2px; font-family: var(--mono);">TOVA</h3>
+                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Novas Inspirações</p>
+                        <p class="album-description">Criando interações fofas e com efeito físico.</p>
+                    </div>
+                </div>
+
+                <!-- DISCO 4 -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-4">
+                            <h3 style="font-size: 20px; font-family: sans-serif; font-weight: bold; text-align: left; line-height: 1.1;">ual ❖ design<br><span style="font-weight: 300; opacity: 0.7;">management</span></h3>
+                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Design & Gestão</p>
+                        <p class="album-description">Como organizar ideias criativas de forma limpa.</p>
+                    </div>
+                </div>
+
+                <!-- DISCO 5 -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-5">
+                            <div class="mini-game-screen">
+                                <span style="color: #ff4444; font-weight: 700;">★ BATTLE MODE ★</span>
+                                <span>Player used Represent!</span>
+                            </div>
+                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Pixel-Art & Jogos</p>
+                        <p class="album-description">Interfaces antigas de videogame despertam criatividade.</p>
+                    </div>
+                </div>
+
+                <!-- DISCO 6 -->
+                <div class="album-item">
+                    <div class="album-interactive-zone">
+                        <div class="album-cover cover-6">
+                            <h3 style="font-size: 30px; font-family: var(--serif); font-style: italic; font-weight: normal; letter-spacing: -1px;">èn MERCY</h3>
+                            <span style="font-size: 7px; border: 1px solid rgba(255,255,255,0.5); padding: 2px 5px; margin-top: 14px; letter-spacing: 1px; font-family: var(--mono);">PARENTAL ADVISORY</span>
+                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
+                    </div>
+                    <div class="album-meta">
+                        <p class="album-title">Estilo Editorial</p>
+                        <p class="album-description">A tipografia forte de álbuns antigos é personalidade pura.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 4: CONECTE -->
+    <section id="connect-section" class="page-section">
+        <p class="connect-eyebrow">Contato</p>
+        <h2 class="connect-heading">Vamos conversar.</h2>
+        <div class="ticket-container" onclick="openContactForm()">
+            <div class="diga-oi-badge">DIGA<br>OI!</div>
+            <div class="ticket-part ticket-left">
+                <span style="font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--pink);">PAPERS | FIRST CLASS</span>
+                <div style="margin: 12px 0;">
+                    <span style="font-family: var(--serif); font-style: italic; font-size: 28px; letter-spacing: -1px;">concept</span>
+                </div>
+                <span style="font-family: var(--mono); font-size: 10px; color: #aaa;">CLICK PARA ABRIR ✦</span>
+            </div>
+            <div class="ticket-part ticket-right">
+                <span style="font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 1px;">HKG ✈ INTL</span>
+                <div style="text-align: center;">
+                    <span style="font-family: var(--mono); font-size: 28px; font-weight: 700; display: block;">✈</span>
+                </div>
+                <span style="font-family: var(--mono); font-size: 10px; text-decoration: underline; font-weight: 700;">let's connect.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL SOBRE MIM -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="about-card">
+            <button class="close-btn" onclick="closeAboutModal()">✕</button>
+            <div style="flex: 1;">
+                <h2 class="about-title">criando experiências fofas,<br>apaixonada por design retrô.</h2>
+                <p class="about-body">Sou uma mente criativa com paixão por unir interatividade e estética visual. Adoro encontrar projetos incríveis na internet que me inspirem a criar layouts dinâmicos e cheios de movimento.</p>
+            </div>
+            <img class="profile-pic" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Danielle" alt="Foto de perfil">
+        </div>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <div class="form-overlay" id="formOverlay">
+        <div class="form-window">
+            <div class="form-header">
+                <h2 class="form-title">Vamos conversar.</h2>
+                <button class="close-form-btn" onclick="closeContactForm()">✕ Fechar</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" placeholder="Como te chamamos?">
+                </div>
+                <div class="form-group">
+                    <label>Empresa</label>
+                    <input type="text" placeholder="Marca ou projeto">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="seu@email.com">
+            </div>
+            <div class="form-group">
+                <label>Sua visão</label>
+                <textarea placeholder="Conta sobre o que você quer criar..."></textarea>
+            </div>
+            <button class="send-btn" onclick="alert('Mensagem enviada! ✦')">Enviar mensagem →</button>
+        </div>
+    </div>
+
+    <script>
+        // ── CURSOR CUSTOMIZADO ──
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        let mx = -100, my = -100, rx = -100, ry = -100;
+
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+        function animateCursor() {
+            cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+            rx += (mx - rx - 18) * 0.14;
+            ry += (my - ry - 18) * 0.14;
+            ring.style.transform = `translate(${rx}px, ${ry}px)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.querySelectorAll('a, button, .invoice-box, .ticket-container, .album-interactive-zone, .tab-btn, .nav-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+        });
+
+        // ── PLAYER CORRIGIDO ──
+        let isPlaying = false;
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const player = document.getElementById('player');
+            const btn = document.getElementById('playBtn');
+            const crtStatus = document.getElementById('crt-status');
+            const cdText = document.getElementById('cd-screen-text');
+            if (isPlaying) {
+                player.classList.add('playing');
+                btn.style.background = '#ffccd5'; btn.textContent = '⏸ PAUSE';
+                crtStatus.textContent = '> VISITING SITE...';
+                cdText.textContent = 'PLAYING CD';
+            } else {
+                player.classList.remove('playing');
+                btn.style.background = '#fff'; btn.textContent = '▶ PLAY';
+                crtStatus.textContent = '> STATUS: IDLE';
+                cdText.textContent = 'OSCAR TAO';
+            }
+        }
+
+        function switchTab(tabId, btnEl) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnEl.classList.add('active');
+        }
+
+        // ── SERVIÇOS ──
+        function toggleServicesPanel() {
+            document.getElementById('servicesPanel').classList.toggle('panel-active');
+        }
+
+        // ── MODAIS ──
+        function updateLabel(text) { document.getElementById('current-page-label').textContent = text; }
+        function openAboutModal() { document.getElementById('aboutModal').classList.add('modal-open'); }
+        function closeAboutModal() { document.getElementById('aboutModal').classList.remove('modal-open'); }
+        function openContactForm() { document.getElementById('formOverlay').classList.add('form-open'); }
+        function closeContactForm() { document.getElementById('formOverlay').classList.remove('form-open'); }
+
+        // ── ROLAGEM HORIZONTAL GLOBAL ──
+        window.addEventListener('wheel', e => {
+            const isInsideGallery = e.target.closest('#albumWrapper');
+            if (isInsideGallery) {
+                document.getElementById('albumWrapper').scrollLeft += e.deltaY * 1.0;
+            }
+            window.scrollBy({ left: e.deltaY * 1.0 });
+        }, { passive: true });
+
+        // ── OBSERVER HORIZONTAL PARA ATUALIZAR DOTS ──
+        const sections = document.querySelectorAll('.page-section');
+        const dots = document.querySelectorAll('.page-dot');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    dots.forEach(d => d.classList.remove('active'));
+                    const active = document.querySelector(`.page-dot[data-section="${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+
+                    const label = { home: 'Casa', 'services-section': 'Serviços', blog: 'Catálogo', 'connect-section': 'Conecte' };
+                    updateLabel(label[entry.target.id] || 'Casa');
+
+                    dots.forEach(d => {
+                        entry.target.id === 'services-section'
+                            ? d.classList.add('white')
+                            : d.classList.remove('white');
+                    });
+                }
+            });
+        }, { rootMargin: '0px -49% 0px -49%', threshold: 0 });
+        sections.forEach(s => observer.observe(s));
+
+        // ── ESC ──
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                closeAboutModal(); closeContactForm();
+            }
+        });
+    </script>
+</body>
+</html>
