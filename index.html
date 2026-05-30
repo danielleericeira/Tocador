@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Player Retrô ♡</title>
+    <style>
+        /* Estilo Geral - Cores fofas e Pastel */
+        body {
+            background-color: #ffdeeb;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: #4a4a4a;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px white;
+        }
+
+        /* Container das Abas */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: -2px;
+            z-index: 1;
+        }
+
+        .tab-btn {
+            background-color: #f0a8c4;
+            border: 2px solid #4a4a4a;
+            border-bottom: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: #fff0f5;
+            color: #4a4a4a;
+            padding-bottom: 10px;
+        }
+
+        /* Tela Principal do Player */
+        .player-container {
+            background-color: #fff0f5;
+            border: 3px solid #4a4a4a;
+            border-radius: 12px;
+            padding: 30px;
+            width: 350px;
+            height: 250px;
+            box-shadow: 5px 5px 0px #4a4a4a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Conteúdos de cada Aba */
+        .tab-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* --- DESIGN DA FITA CASSETE --- */
+        .cassette {
+            background-color: #4facfe;
+            border: 3px solid #4a4a4a;
+            width: 220px;
+            height: 130px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: inset -5px -5px 0px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cassette-label {
+            background-color: white;
+            border: 2px solid #4a4a4a;
+            width: 160px;
+            height: 70px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .cassette-wheels {
+            display: flex;
+            gap: 40px;
+        }
+
+        .wheel {
+            width: 25px;
+            height: 25px;
+            background-color: #4a4a4a;
+            border-radius: 50%;
+            border: 4px dashed #fff;
+        }
+
+        /* Animação de Girar a Fita */
+        .playing .wheel {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- DESIGN DA JANELA WINDOWS 95 --- */
+        .win95-window {
+            background-color: #cdcdcd;
+            border: 2px solid white;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            width: 260px;
+            box-shadow: 2px 2px 0px black;
+        }
+
+        .win95-title {
+            background-color: #000080;
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .win95-content {
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* Controles Comuns */
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background-color: #fff;
+            border: 2px solid #4a4a4a;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 6px;
+            box-shadow: 2px 2px 0px #4a4a4a;
+        }
+
+        .btn:active {
+            box-shadow: 0px 0px 0px #4a4a4a;
+            transform: translate(2px, 2px);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Nosso Player Fofo ♫</h1>
+
+    <!-- Abas para escolher o visual -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('cassette-tab')">📼 Fita Cassete</button>
+        <button class="tab-btn" onclick="switchTab('win95-tab')">💻 Janela Retrô</button>
+    </div>
+
+    <!-- Container do Player -->
+    <div class="player-container" id="player">
+        
+        <!-- ABA 1: FITA CASSETE -->
+        <div id="cassette-tab" class="tab-content active">
+            <div class="cassette">
+                <div class="cassette-label">
+                    <span style="font-size: 10px; font-weight: bold;">Lofi Vibes Vol. 1</span>
+                    <div class="cassette-wheels">
+                        <div class="wheel"></div>
+                        <div class="wheel"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 2: WINDOWS 95 -->
+        <div id="win95-tab" class="tab-content">
+            <div class="win95-window">
+                <div class="win95-title">
+                    <span>player.exe</span>
+                    <span>🗙</span>
+                </div>
+                <div class="win95-content">
+                    <p style="margin: 0; font-weight: bold;">Tocando agora...</p>
+                    <p id="track-title" style="margin: 5px 0 0 0; color: #000080;">Minha Música.mp3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botões de Controle (Servem para as duas abas!) -->
+        <div class="controls">
+            <button class="btn" id="playBtn" onclick="togglePlay()">▶ PLAY</button>
+        </div>
+    </div>
+
+    <script>
+        let isPlaying = false;
+
+        // Função para alternar entre as abas
+        function switchTab(tabId) {
+            // Remove a classe ativa de todas as abas e botões
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Ativa a aba que o usuário clicou
+            document.getElementById(tabId).classList.add('active');
+            
+            // Ativa o botão correspondente
+            const clickedBtn = event.currentTarget;
+            clickedBtn.classList.add('active');
+        }
+
+        // Função do botão de Play / Pause
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const playerContainer = document.getElementById('player');
+            const playBtn = document.getElementById('playBtn');
+
+            if (isPlaying) {
+                playerContainer.classList.add('playing');
+                playBtn.innerText = "⏸ PAUSE";
+            } else {
+                playerContainer.classList.add('playing'); // apenas para controle interno
+                playerContainer.classList.remove('playing');
+                playBtn.innerText = "▶ PLAY";
+            }
+        }
+    </script>
+</body>
+</html>
