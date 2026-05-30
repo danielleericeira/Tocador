@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Cantinho Retrô ♡ Blog & Música</title>
     <style>
+        /* Estilo Geral e Configurações de Rolagem Livre */
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
-            background-color: #ffffff; /* Fundo limpo e minimalista como o do site */
+            background-color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
             color: #1a1a1a;
             user-select: none;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
 
         /* --- HEADER E NAVBAR ESTILO EUGENE WAN --- */
@@ -53,7 +55,7 @@
 
         .logo-subtitle {
             font-size: 12px;
-            color: #ff85a2; /* Rosa fofo de destaque */
+            color: #ff85a2;
             font-weight: 500;
         }
 
@@ -100,7 +102,7 @@
             z-index: 101;
         }
 
-        .dropdown-content button {
+        .dropdown-content button, .dropdown-content a {
             background: none;
             border: none;
             width: 100%;
@@ -114,9 +116,10 @@
             cursor: pointer;
             font-family: inherit;
             transition: 0.15s;
+            box-sizing: border-box;
         }
 
-        .dropdown-content button:hover {
+        .dropdown-content button:hover, .dropdown-content a:hover {
             background-color: #fff0f5;
             color: #ff85a2;
         }
@@ -125,65 +128,51 @@
             display: block;
         }
 
-        /* --- CONTROLE DAS SEÇÕES (A MÁGICA DE ESCONDER) --- */
+        /* --- SEÇÕES COM ROLAGEM LIVRE CONTINUA --- */
         .page-section {
-            display: none; /* Esconde por padrão */
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-grow: 1;
-            padding: 120px 40px 60px 40px;
+            padding: 140px 40px 80px 40px;
             box-sizing: border-box;
-            min-height: calc(100vh - 80px);
-        }
-
-        /* Classe que o JavaScript vai usar para mostrar a aba ativa */
-        .page-section.active-page {
-            display: flex;
+            min-height: 100vh;
         }
 
         #home { background-color: #ffdeeb; }
-        #about { background-color: #ffffff; }
+        #services-section { background-color: #000000; color: #ffffff; }
         #blog { background-color: #f7e1ed; }
+        #connect-section { background-color: #ffffff; border-top: 1px solid #eaeaea; }
 
-        /* --- SEÇÃO SOBRE MIM (ESTILO DA IMAGEM) --- */
-        .about-layout {
-            max-width: 1100px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 60px;
+        /* --- MODAL FLUTUANTE: SOBRE MIM (Só abre no clique) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.modal-open { display: flex; }
+
+        .about-modal-card {
+            background-color: white; color: #1a1a1a;
+            border-radius: 20px; padding: 40px; max-width: 800px; width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative; display: flex; gap: 40px;
+            align-items: center;
+        }
+        .close-modal-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: #f0f0f0; border: none; font-size: 18px;
+            width: 35px; height: 35px; border-radius: 50%; cursor: pointer;
         }
 
-        .about-text-side {
-            flex: 1;
-        }
-
-        .about-main-headline {
-            font-size: 42px;
-            font-weight: 700;
-            line-height: 1.15;
-            letter-spacing: -1.5px;
-            margin-bottom: 35px;
-            color: #1a1a1a;
-        }
-
-        .about-paragraphs p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .profile-circle {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #eaeaea;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
+        .about-main-headline { font-size: 36px; font-weight: 700; line-height: 1.2; margin-bottom: 20px; letter-spacing: -1px; }
+        .about-paragraphs p { font-size: 15px; line-height: 1.6; color: #555; margin-bottom: 15px; }
+        .profile-circle { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 2px solid #eaeaea; }
 
         /* --- DESIGN DO PLAYER RETRÔ --- */
         .tabs { display: flex; gap: 6px; margin-bottom: -3px; z-index: 1; }
@@ -219,11 +208,36 @@
         .playing .crt-button { background-color: #33ff33; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
+        /* --- INTERAÇÃO 1: NOTA FISCAL (TEMA PAPERS) --- */
+        .services-wrapper {
+            display: flex; align-items: center; justify-content: center;
+            gap: 50px; width: 100%; max-width: 950px; margin-top: 30px;
+        }
+        .invoice-box { position: relative; cursor: pointer; width: 260px; }
+        .invoice-paper {
+            background-color: #e5e5e5; background-image: radial-gradient(#d5d5d5 10%, transparent 11%); background-size: 4px 4px;
+            color: #111; padding: 25px 20px; font-family: 'Courier New', monospace;
+            border: 1px solid #ccc; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); border-bottom: 8px dashed #000;
+        }
+        .click-badge {
+            position: absolute; top: 30%; left: -20px; background-color: #e60000; color: white;
+            font-weight: 900; font-size: 10px; padding: 14px 6px; text-align: center;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0; transform: scale(0.5); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10;
+        }
+        .invoice-box:hover .click-badge { opacity: 1; transform: scale(1); }
+        .services-details-panel {
+            background-color: #111; border: 1px solid #333; border-radius: 12px;
+            padding: 30px; width: 450px; display: none; flex-direction: column; gap: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left;
+        }
+        .services-details-panel.panel-active { display: flex; }
+
         /* --- FILERA DE DISCOS (BLOG) --- */
         .album-scroll-wrapper { width: 100vw; max-width: 100%; overflow-x: auto; padding: 40px 0; display: flex; justify-content: flex-start; scrollbar-width: none; }
         .album-scroll-wrapper::-webkit-scrollbar { display: none; }
         .album-track { display: flex; gap: 100px; padding-left: 10vw; padding-right: 10vw; }
-        .album-item { display: flex; flex-direction: column; width: 260px; }
+        .album-item { display: flex; flex-direction: column; width: 260px; text-align: left; }
         .album-interactive-zone { position: relative; width: 240px; height: 240px; cursor: pointer; }
         .album-cover { position: absolute; top: 0; left: 0; width: 240px; height: 240px; border-radius: 4px; border: 3px solid #4a4a4a; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; box-sizing: border-box; color: white; text-align: center; padding: 20px; font-family: 'Courier New', monospace; }
         .cover-1 { background-color: #222; }
@@ -235,11 +249,54 @@
         .album-meta { margin-top: 20px; width: 240px; }
         .album-title { font-size: 18px; font-weight: bold; margin: 0 0 5px 0; }
         .album-description { font-size: 12px; color: #666; line-height: 1.4; margin: 0; }
+
+        /* --- INTERAÇÃO 2: TICKET QUE RASGA NO MEIO --- */
+        .ticket-container {
+            position: relative; width: 540px; height: 180px;
+            display: flex; gap: 8px; cursor: pointer; margin-top: 30px;
+        }
+        .ticket-part {
+            background-color: #f5f5f5; color: #111; box-sizing: border-box;
+            border: 2px solid #4a4a4a; padding: 20px; transition: transform 0.4s ease-out;
+            background-image: radial-gradient(circle, #fff 10%, transparent 15%); background-size: 6px 6px;
+        }
+        .ticket-left { width: 370px; border-radius: 12px 0 0 12px; border-right: 3px dashed #999; display: flex; flex-direction: column; justify-content: space-between; text-align: left; }
+        .ticket-right { width: 162px; border-radius: 0 12px 12px 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+        
+        /* O efeito de rasgar se afastando ao colocar o mouse */
+        .ticket-container:hover .ticket-left { transform: translateX(-25px) rotate(-1.5deg); }
+        .ticket-container:hover .ticket-right { transform: translateX(25px) rotate(1.5deg); }
+
+        .diga-oi-badge {
+            position: absolute; right: -25px; top: 35%; background-color: #e60000; color: white;
+            font-weight: 900; font-size: 10px; padding: 15px 10px; text-align: center;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0; transition: 0.3s; z-index: 10; animation: pulseBadge 1s infinite alternate;
+        }
+        .ticket-container:hover .diga-oi-badge { opacity: 1; }
+
+        /* --- INTERAÇÃO 3: FORMULÁRIO TRANSPARENTE FLUTUANTE --- */
+        .contact-form-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85); z-index: 300;
+            display: none; align-items: center; justify-content: center;
+        }
+        .contact-form-overlay.form-open { display: flex; }
+        .form-window { width: 600px; color: white; padding: 30px; display: flex; flex-direction: column; gap: 20px; text-align: left; }
+        .form-row { display: flex; gap: 20px; }
+        .form-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 11px; font-weight: bold; color: #aaa; text-transform: uppercase; }
+        .form-group input, .form-group textarea {
+            background: none; border: none; border-bottom: 1px solid #fff; padding: 10px 0;
+            color: white; font-size: 15px; font-family: inherit; outline: none;
+        }
+        .form-group textarea { height: 80px; resize: none; }
+        .send-btn { background-color: white; color: black; border: none; padding: 14px; border-radius: 25px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <!-- CABEÇALHO COMPLETO ESTILO EUGENE WAN -->
+    <!-- CABEÇALHO COM ESTILO DE DROPDOWN -->
     <header class="header-bar">
         <div class="logo-area">
             <span style="font-size: 24px;">🫣</span>
@@ -249,25 +306,26 @@
             </div>
         </div>
 
-        <!-- MENU SUSPENSO INTERATIVO NO CANTO -->
         <div class="nav-dropdown-container">
             <div class="player-status-btn">
                 Jogando agora: <span class="bold" id="current-page-label">Casa</span> ▾
             </div>
             <div class="dropdown-content">
-                <!-- Agora eles chamam uma função JavaScript para trocar a tela -->
-                <button onclick="navigateTo('home', 'Casa')">Casa</button>
-                <button onclick="navigateTo('about', 'Sobre')">Sobre</button>
-                <button onclick="navigateTo('blog', 'Catálogo')">Catálogo</button>
+                <a href="#home" onclick="updateLabel('Casa')">Casa</a>
+                <!-- Clicar em Sobre aciona a janela flutuante -->
+                <button onclick="openAboutModal()">Sobre</button>
+                <a href="#services-section" onclick="updateLabel('Serviços')">Serviços</a>
+                <a href="#blog" onclick="updateLabel('Catálogo')">Catálogo</a>
+                <a href="#connect-section" onclick="updateLabel('Conecte')">Conecte</a>
             </div>
         </div>
     </header>
 
-    <!-- SEÇÃO 1: PLAYER (Começa visível com a classe active-page) -->
-    <section id="home" class="page-section active-page">
+    <!-- SEÇÃO 1: PLAYER (ROLAGEM LIVRE) -->
+    <section id="home" class="page-section">
         <h1 style="font-family: 'Courier New', monospace;">Meu Cantinho Retrô ♫</h1>
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('cassette-tab')">📼 Fita</button>
+            <button class="tab-btn active" onclick="switchTab('cassette-tab')"> Fita</button>
             <button class="tab-btn" onclick="switchTab('crt-tab')">📺 PC de Tubo</button>
             <button class="tab-btn" onclick="switchTab('cd-tab')">💿 Toca CDs</button>
         </div>
@@ -301,23 +359,46 @@
         </div>
     </section>
 
-    <!-- SEÇÃO 2: SOBRE MIM (Só aparece ao clicar em Sobre) -->
-    <section id="about" class="page-section">
-        <div class="about-layout">
-            <div class="about-text-side">
-                <h2 class="about-main-headline">criando experiências fofas,<br>apaixonada por design retrô.</h2>
-                <div class="about-paragraphs">
-                    <p>Sou uma mente criativa com paixão por unir código, interatividade e estética visual. Adoro encontrar projetos incríveis na internet que me inspirem a recriar layouts dinâmicos e cheios de movimento.</p>
-                    <p>Este espaço nasceu como um pequeno desafio pessoal e acabou se tornando o meu playground oficial de testes, onde posso exercitar minhas ideias livremente no meu próprio ritmo.</p>
+    <!-- SEÇÃO 2: SERVIÇOS (TEMA PAPERS NOTA FISCAL) -->
+    <section id="services-section" class="page-section">
+        <span style="text-transform: uppercase; font-size: 12px; letter-spacing: 2px; font-weight: bold;">Serviços</span>
+        <h2 style="font-size: 42px; margin-top: 10px; margin-bottom: 30px; text-shadow: none;">O que fazemos.</h2>
+
+        <div class="services-wrapper">
+            <div class="invoice-box" onclick="toggleServicesPanel()">
+                <div class="click-badge">CLICK<br>EU!</div>
+                <div class="invoice-paper">
+                    <h3 style="margin: 0 0 15px 0; text-align: center; font-size: 20px; font-weight: 900;">papers 📄</h3>
+                    <div style="font-size: 11px; display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #333; padding-bottom: 5px;">
+                        <span>ITEM</span><span>TOTAL</span>
+                    </div>
+                    <div style="font-size: 12px; display: flex; justify-content: space-between; margin-bottom: 8px;"><span>WEB DESIGN</span><span>$1.50</span></div>
+                    <div style="font-size: 12px; display: flex; justify-content: space-between; margin-bottom: 8px;"><span>LOGO DESIGN</span><span>$0.21</span></div>
+                    <div style="font-size: 12px; display: flex; justify-content: space-between; margin-bottom: 8px;"><span>BRANDING</span><span>$4.20</span></div>
+                    <div style="font-size: 12px; display: flex; justify-content: space-between; margin-bottom: 8px;"><span>HOSTING</span><span>$0.67</span></div>
+                    <div style="font-size: 12px; display: flex; justify-content: space-between; margin-bottom: 15px;"><span>CREATIVE DIR.</span><span>$0.33</span></div>
+                    <div style="font-size: 14px; font-weight: bold; display: flex; justify-content: space-between; border-top: 1px dashed #333; padding-top: 10px;">
+                        <span>TOTAL:</span><span>$$$</span>
+                    </div>
                 </div>
             </div>
-            <div class="about-image-side">
-                <img class="profile-circle" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Danielle" alt="Minha Foto de Perfil">
+
+            <div class="services-details-panel" id="servicesPanel">
+                <div>
+                    <h4 style="color: #ff85a2; margin: 0 0 5px 0; font-size: 12px;">SERVIÇO #1</h4>
+                    <h3 style="margin: 0 0 10px 0; font-size: 20px;">Design de sites</h3>
+                    <p style="color: #ccc; font-size: 14px; margin: 0; line-height: 1.5;">Projetamos sites que desafiam o status quo para criar uma experiência digital refrescante e intensa para sua marca.</p>
+                </div>
+                <div style="border-top: 1px solid #333; padding-top: 20px;">
+                    <h4 style="color: #ff85a2; margin: 0 0 5px 0; font-size: 12px;">SERVIÇO #2</h4>
+                    <h3 style="margin: 0 0 10px 0; font-size: 20px;">Design Gráfico</h3>
+                    <p style="color: #ccc; font-size: 14px; margin: 0; line-height: 1.5;">Criamos sistemas visuais que comunicam sua marca com total clareza. Pronto para ser escalado.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO 3: BLOG (Só aparece ao clicar em Catálogo) -->
+    <!-- SEÇÃO 3: BLOG (CATÁLOGO DE DISCOS) -->
     <section id="blog" class="page-section">
         <h2 style="font-size: 28px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px;">Meu Catálogo de Pensamentos</h2>
         <p style="color: #666; font-size: 14px; margin-bottom: 30px;">Passe o mouse nos discos e use a rodinha para rolar para o lado</p>
@@ -326,64 +407,115 @@
             <div class="album-track">
                 <div class="album-item">
                     <div class="album-interactive-zone">
-                        <div class="album-cover cover-1">
-                            <h3 style="font-size: 24px; margin: 0; font-family: sans-serif; font-weight: 900; letter-spacing: -1px;">papers 📄</h3>
-                        </div>
+                        <div class="album-cover cover-1"><h3 style="font-size: 24px; margin: 0; font-weight: 900;">papers 📄</h3></div>
                         <div class="vinyl-record"><div class="vinyl-center"></div></div>
                     </div>
-                    <div class="album-meta">
-                        <p class="album-title">Primeiro Post!</p>
-                        <p class="album-description">Coloquei meu site oficial no ar usando o GitHub Pages. O TDAH tentou me parar, mas eu consegui!</p>
-                    </div>
+                    <div class="album-meta"><p class="album-title">Primeiro Post!</p><p class="album-description">Site oficial no ar usando GitHub Pages.</p></div>
                 </div>
-
                 <div class="album-item">
                     <div class="album-interactive-zone">
-                        <div class="album-cover cover-2">
-                            <h3 style="font-size: 28px; margin: 0; font-weight: bold; font-family: serif;">ew.</h3>
-                        </div>
+                        <div class="album-cover cover-2"><h3 style="font-size: 28px; margin: 0; font-weight: bold; font-family: serif;">ew.</h3></div>
                         <div class="vinyl-record"><div class="vinyl-center"></div></div>
                     </div>
-                    <div class="album-meta">
-                        <p class="album-title">Estética Retrô</p>
-                        <p class="album-description">Sou apaixonada por coisas vintage: fitas cassete, computadores de tubo e vinis que deslizam da capa.</p>
-                    </div>
+                    <div class="album-meta"><p class="album-title">Estética Retrô</p><p class="album-description">Sou apaixonada pela nostalgia do design vintage.</p></div>
                 </div>
-
                 <div class="album-item">
                     <div class="album-interactive-zone">
-                        <div class="album-cover cover-3">
-                            <h3 style="font-size: 26px; margin: 0; font-family: 'Georgia', serif; font-weight: normal; letter-spacing: 2px;">TOVA</h3>
-                        </div>
+                        <div class="album-cover cover-3"><h3 style="font-size: 26px; margin: 0; letter-spacing: 2px;">TOVA</h3></div>
                         <div class="vinyl-record"><div class="vinyl-center"></div></div>
                     </div>
-                    <div class="album-meta">
-                        <p class="album-title">Novas Inspirações</p>
-                        <p class="album-description">Estudando animações em portfólios incríveis como o do Oscar Tao e do Eugene Wan para deixar meu cantinho perfeito.</p>
-                    </div>
+                    <div class="album-meta"><p class="album-title">Novas Inspirações</p><p class="album-description">Criando interações fofas e cheias de efeito físico.</p></div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- SEÇÃO 4: CONECTE (TICKET QUE SE RASGA AO MEIO) -->
+    <section id="connect-section" class="page-section">
+        <h2 style="font-size: 32px; font-weight: bold; margin-bottom: 10px;">Contato</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 30px;">Coloque o mouse em cima do cartão para rasgá-lo, e clique para preencher as informações.</p>
+
+        <div class="ticket-container" onclick="openContactForm()">
+            <div class="diga-oi-badge">DIGA<br>OI!</div>
+            
+            <div class="ticket-part ticket-left">
+                <span style="font-size: 11px; font-weight: bold; color: #ff85a2;">PAPERS | FIRST CLASS</span>
+                <div style="margin: 15px 0;">
+                    <span style="font-size: 10px; color: #777; display: block;">FROM:</span>
+                    <span style="font-size: 22px; font-weight: 900; letter-spacing: -1px;">concept</span>
+                </div>
+                <div style="font-size: 9px; color: #4a4a4a; letter-spacing: 1px;">PORTFOLIO INTERATIVO</div>
+            </div>
+            
+            <div class="ticket-part ticket-right">
+                <span style="font-size: 10px; font-weight: bold; letter-spacing: 1px;">HKG ✈ INTL</span>
+                <div style="margin: 15px 0; text-align: center;">
+                    <span style="font-size: 10px; color: #777; display: block;">TO:</span>
+                    <span style="font-size: 18px; font-weight: bold;">completion</span>
+                </div>
+                <span style="font-size: 11px; font-weight: bold; text-decoration: underline;">let's connect.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- JANELA MODAL FLUTUANTE: SOBRE MIM (Só abre via clique) --- -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="about-modal-card">
+            <button class="close-modal-btn" onclick="closeAboutModal()">🗙</button>
+            <div style="flex: 1;">
+                <h2 class="about-main-headline">criando experiências fofas,<br>apaixonada por design retrô.</h2>
+                <div class="about-paragraphs">
+                    <p>Sou uma mente criativa com paixão por unir código, interatividade e estética visual. Adoro encontrar projetos incríveis na internet que me inspirem a recriar layouts dinâmicos e cheios de movimento.</p>
+                    <p>Este espaço nasceu como um pequeno desafio pessoal e acabou se tornando o meu playground oficial de testes, onde posso exercitar minhas ideias livremente no meu próprio ritmo.</p>
+                </div>
+            </div>
+            <div>
+                <img class="profile-circle" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Danielle" alt="Minha Foto">
+            </div>
+        </div>
+    </div>
+
+    <!-- --- INTERFACE FLUTUANTE DO FORMULÁRIO DE CONTATO (Abre clicando no ticket) --- -->
+    <div class="contact-form-overlay" id="formOverlay">
+        <div class="form-window">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px;">
+                <h2 style="color: white; margin: 0; text-shadow: none; font-size: 24px;">Contato / Vamos conversar.</h2>
+                <button onclick="closeContactForm()" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">🗙 Fechar</button>
+            </div>
+            <p style="color: #aaa; font-size: 14px; margin: 0;">Somos um estúdio que valoriza simplicidade e acertar as coisas. Entre em contato.</p>
+            
+            <div class="form-row" style="margin-top: 20px;">
+                <div class="form-group"><label>Nome</label><input type="text" placeholder="Como podemos chamá-lo?"></div>
+                <div class="form-group"><label>Negócios</label><input type="text" placeholder="Entidade ou Nome da Marca"></div>
+            </div>
+            <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+            <div class="form-group"><label>Descreva a Visão</label><textarea placeholder="Conte-nos sobre a transformação que você está buscando..."></textarea></div>
+            
+            <button class="send-btn" onclick="alert('Mensagem enviada com sucesso!')">Enviar</button>
+        </div>
+    </div>
+
     <script>
         let isPlaying = false;
 
-        /* FUNÇÃO PRINCIPAL: Altera a página inteira ao clicar no menu */
-        function navigateTo(sectionId, labelText) {
-            // Esconde todas as seções principais removendo a classe ativa
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active-page');
-            });
-
-            // Mostra apenas a seção que foi clicada
-            document.getElementById(sectionId).classList.add('active-page');
-
-            // Atualiza o texto do botão lá no topo ("Jogando agora: ...")
-            document.getElementById('current-page-label').innerText = labelText;
+        // Atualiza a label do botão "Jogando agora"
+        function updateLabel(text) {
+            document.getElementById('current-page-label').innerText = text;
         }
 
-        // Script de Rolagem Lateral com a rodinha do mouse
+        // Funções para controlar o Modal de "Sobre Mim"
+        // Ao clicar, o painel abre sem interferir na rolagem das outras seções
+        function openAboutModal() { document.getElementById('aboutModal').classList.add('modal-open'); }
+        function closeAboutModal() { document.getElementById('aboutModal').classList.remove('modal-open'); }
+
+        // Controla exibição da Nota Fiscal lateral
+        function toggleServicesPanel() { document.getElementById('servicesPanel').classList.toggle('panel-active'); }
+
+        // Controla exibição do Formulário de Contato transparente
+        function openContactForm() { document.getElementById('formOverlay').classList.add('form-open'); }
+        function closeContactForm() { document.getElementById('formOverlay').classList.remove('form-open'); }
+
+        // Script de Rolagem Lateral com a rodinha do mouse nos discos
         const scrollContainer = document.getElementById('albumWrapper');
         scrollContainer.addEventListener('wheel', (evt) => {
             evt.preventDefault();
