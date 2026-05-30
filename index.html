@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+<!DOCTYPE html><html lang="pt-BR"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Cantinho Retrô ♡</title>
@@ -513,14 +511,11 @@
         .page-dot.active { background: var(--dark); transform: scale(1.4); }
         .page-dot.white { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.2); }
         .page-dot.white.active { background: white; }
-    </style>
-</head>
-<body>
+    </style></head><body>
 
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
 
-    <!-- INDICADOR INFERIOR -->
     <nav class="page-indicator" aria-label="Seções">
         <a href="#home"><div class="page-dot active" data-section="home"></div></a>
         <a href="#services-section"><div class="page-dot" data-section="services-section"></div></a>
@@ -528,10 +523,8 @@
         <a href="#connect-section"><div class="page-dot" data-section="connect-section"></div></a>
     </nav>
 
-    <!-- HEADER COM NOVO SÍMBOLO PREMIUM -->
     <header class="header-bar">
         <div class="logo-area">
-            <!-- Trocado o emoji feio pelo símbolo de estrela clássica -->
             <div class="logo-icon">✦</div>
             <div>
                 <div class="logo-title">Danielle</div>
@@ -552,7 +545,6 @@
         </div>
     </header>
 
-    <!-- SEÇÃO 1: HERO + PLAYER -->
     <section id="home" class="page-section">
         <div class="hero-label">✦ meu cantinho digital ✦</div>
         <h1 class="hero-title">Meu Cantinho<br><em>Retrô</em> ♫</h1>
@@ -602,7 +594,6 @@
         </div>
     </section>
 
-    <!-- SEÇÃO 2: SERVIÇOS -->
     <section id="services-section" class="page-section">
         <p class="services-eyebrow">Serviços</p>
         <h2 class="services-heading">O que fazemos.</h2>
@@ -637,7 +628,6 @@
         </div>
     </section>
 
-    <!-- SEÇÃO 3: CATÁLOGO DE DISCOS (6 VINIS HORIZONTAIS) -->
     <section id="blog" class="page-section">
         <div class="blog-header">
             <h2 class="blog-title">Catálogo de Pensamentos</h2>
@@ -646,7 +636,6 @@
         <div class="album-scroll-wrapper" id="albumWrapper">
             <div class="album-track">
                 
-                <!-- DISCO 1 -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-1">
@@ -660,7 +649,6 @@
                     </div>
                 </div>
 
-                <!-- DISCO 2 -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-2">
@@ -674,7 +662,6 @@
                     </div>
                 </div>
 
-                <!-- DISCO 3 -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-3">
@@ -688,7 +675,6 @@
                     </div>
                 </div>
 
-                <!-- DISCO 4 -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-4">
@@ -702,7 +688,6 @@
                     </div>
                 </div>
 
-                <!-- DISCO 5 -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-5">
@@ -719,7 +704,6 @@
                     </div>
                 </div>
 
-                <!-- DISCO 6 -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-6">
@@ -738,7 +722,6 @@
         </div>
     </section>
 
-    <!-- SEÇÃO 4: CONECTE -->
     <section id="connect-section" class="page-section">
         <p class="connect-eyebrow">Contato</p>
         <h2 class="connect-heading">Vamos conversar.</h2>
@@ -761,7 +744,6 @@
         </div>
     </section>
 
-    <!-- MODAL SOBRE MIM -->
     <div class="modal-overlay" id="aboutModal">
         <div class="about-card">
             <button class="close-btn" onclick="closeAboutModal()">✕</button>
@@ -773,7 +755,6 @@
         </div>
     </div>
 
-    <!-- FORMULÁRIO -->
     <div class="form-overlay" id="formOverlay">
         <div class="form-window">
             <div class="form-header">
@@ -823,7 +804,7 @@
             el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
         });
 
-        // ── PLAYER ──
+        // ── PLAYER CORRIGIDO ──
         let isPlaying = false;
         function togglePlay() {
             isPlaying = !isPlaying;
@@ -901,6 +882,4 @@
                 closeAboutModal(); closeContactForm();
             }
         });
-    </script>
-</body>
-</html>
+    </script></body></html>
