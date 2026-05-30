@@ -11,402 +11,264 @@
         }
         
         body {
-            background-color: #ffdeeb;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #ffffff; /* Fundo limpo e minimalista como o do site */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            color: #4a4a4a;
+            color: #1a1a1a;
             user-select: none;
             overflow-x: hidden;
         }
 
-        /* Barra de Navegação Fixa no Topo */
-        .navbar {
-            background-color: #fff0f5;
-            border-bottom: 3px solid #4a4a4a;
+        /* --- HEADER E NAVBAR ESTILO EUGENE WAN --- */
+        .header-bar {
             position: fixed;
             top: 0;
             width: 100%;
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            padding: 15px 0;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             z-index: 100;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.05);
         }
 
-        .navbar a {
-            text-decoration: none;
-            color: #4a4a4a;
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
             font-weight: bold;
+            font-size: 16px;
+            color: #1a1a1a;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: #ff85a2; /* Rosa fofo de destaque */
+            font-weight: 500;
+        }
+
+        /* Menu de Opções no Canto Direito (Dropdown) */
+        .nav-dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* O botão simulando o player "Jogando agora" */
+        .player-status-btn {
+            background: #f0f0f0;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .player-status-btn span.bold {
+            font-weight: bold;
+            background: #fff;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        /* O painel de opções escondido que aparece no hover */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 105%;
+            background-color: #ffffff;
+            min-width: 150px;
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.12);
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+            padding: 8px 0;
+            z-index: 101;
+        }
+
+        .dropdown-content a {
+            color: #1a1a1a;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
             font-size: 14px;
-            transition: 0.2s;
+            font-weight: 600;
+            transition: 0.15s;
         }
 
-        .navbar a:hover {
-            color: #f0a8c4;
+        .dropdown-content a:hover {
+            background-color: #fff0f5;
+            color: #ff85a2;
         }
 
-        /* Seções de Rolagem da Página */
+        /* Mostra o menu quando passa o mouse por cima do container */
+        .nav-dropdown-container:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Seções base */
         .section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 100px 20px 40px 20px;
+            padding: 120px 40px 60px 40px;
             box-sizing: border-box;
         }
 
         #home { background-color: #ffdeeb; }
-        #about { background-color: #fff0f5; border-top: 3px dashed #4a4a4a; }
-        #blog { background-color: #f7e1ed; border-top: 3px dashed #4a4a4a; overflow: hidden; }
+        #about { background-color: #ffffff; }
+        #blog { background-color: #f7e1ed; border-top: 1px solid #eaeaea; }
 
-        h1, h2 {
-            text-shadow: 2px 2px 0px white;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h1 { font-size: 26px; }
-        h2 { font-size: 24px; }
-
-        /* --- CÓDIGO DO TOCADOR DE MÚSICA --- */
-        .tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: -3px;
-            z-index: 1;
-        }
-
-        .tab-btn {
-            background-color: #f0a8c4;
-            border: 3px solid #4a4a4a;
-            border-bottom: none;
-            padding: 10px 16px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            border-radius: 10px 10px 0 0;
-            color: white;
-            box-shadow: inset -2px 3px 0px rgba(255,255,255,0.3);
-            font-size: 14px;
-        }
-
-        .tab-btn.active {
-            background-color: #fff0f5;
-            color: #4a4a4a;
-            padding-bottom: 13px;
-        }
-
-        .player-container {
-            background-color: #fff0f5;
-            border: 3px solid #4a4a4a;
-            border-radius: 14px;
-            padding: 30px;
-            width: 400px;
-            height: 300px;
-            box-shadow: 6px 6px 0px #4a4a4a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        .tab-content {
-            display: none;
+        /* --- SEÇÃO SOBRE MIM ATUALIZADA (ESTILO DA IMAGEM) --- */
+        .about-layout {
+            max-width: 1100px;
             width: 100%;
-            height: 80%;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .tab-content.active { display: flex; }
-
-        .cassette {
-            background-color: #4facfe;
-            border: 3px solid #4a4a4a;
-            width: 240px;
-            height: 140px;
-            border-radius: 10px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset -6px -6px 0px rgba(0,0,0,0.15);
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 60px;
+            margin-top: 40px;
         }
 
-        .cassette-label {
-            background-color: white;
-            border: 3px solid #4a4a4a;
-            width: 180px;
-            height: 85px;
-            border-radius: 6px;
+        .about-text-side {
+            flex: 1;
+        }
+
+        .about-main-headline {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            margin-bottom: 35px;
+            color: #1a1a1a;
+        }
+
+        .about-paragraphs p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+
+        .about-image-side {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-        }
-
-        .cassette-wheels {
-            display: flex;
-            gap: 45px;
-            background-color: #e0e0e0;
-            padding: 5px 15px;
-            border-radius: 20px;
-            border: 2px solid #4a4a4a;
-        }
-
-        .wheel {
-            width: 25px;
-            height: 25px;
-            background-color: #4a4a4a;
-            border-radius: 50%;
-            border: 4px dashed #fff;
-        }
-
-        .crt-monitor {
-            background-color: #dedede;
-            border: 4px solid #4a4a4a;
-            border-radius: 20px 20px 10px 10px;
-            padding: 15px 15px 25px 15px;
-            width: 250px;
-            box-shadow: inset -5px -5px 0px #b8b8b8;
-            position: relative;
-        }
-
-        .crt-screen {
-            background-color: #0f1f11;
-            border: 4px solid #7a7a7a;
-            border-radius: 14px;
-            height: 110px;
-            color: #33ff33;
-            font-size: 12px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: inset 0px 0px 15px black;
         }
 
-        .crt-button {
-            width: 12px;
-            height: 12px;
-            background-color: #ff4444;
-            border: 2px solid #4a4a4a;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 6px;
-            right: 25px;
-        }
-
-        .discman {
-            background-color: #cdb4db;
-            border: 4px solid #4a4a4a;
+        /* Círculo perfeito para a foto igual ao do site */
+        .profile-circle {
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            object-fit: cover;
+            border: 2px solid #eaeaea;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        .discman-window {
-            width: 115px;
-            height: 115px;
-            background-color: rgba(255, 255, 255, 0.25);
-            border: 3px solid #4a4a4a;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* --- DESIGN DO PLAYER RETRÔ --- */
+        .tabs { display: flex; gap: 6px; margin-bottom: -3px; z-index: 1; }
+        .tab-btn {
+            background-color: #f0a8c4; border: 3px solid #4a4a4a; border-bottom: none;
+            padding: 10px 16px; cursor: pointer; font-family: 'Courier New', monospace; font-weight: bold;
+            border-radius: 10px 10px 0 0; color: white; font-size: 14px;
         }
-
-        .cd-disc {
-            width: 95px;
-            height: 95px;
-            background: radial-gradient(circle, #4a4a4a 8%, #fff 10%, #e0aaff 30%, #9d4edd 50%, #fff 85%);
-            border: 2px solid #4a4a4a;
-            border-radius: 50%;
+        .tab-btn.active { background-color: #fff0f5; color: #4a4a4a; padding-bottom: 13px; }
+        .player-container {
+            background-color: #fff0f5; border: 3px solid #4a4a4a; border-radius: 14px;
+            padding: 30px; width: 400px; height: 300px; box-shadow: 6px 6px 0px #4a4a4a;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between; position: relative;
         }
-
-        .discman-screen {
-            background-color: #aaccff;
-            border: 2px solid #4a4a4a;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 3px 8px;
-            position: absolute;
-            bottom: 8px;
-            border-radius: 4px;
-            color: #112244;
-        }
-
+        .tab-content { display: none; width: 100%; height: 80%; flex-direction: column; align-items: center; justify-content: center; }
+        .tab-content.active { display: flex; }
+        .cassette { background-color: #4facfe; border: 3px solid #4a4a4a; width: 240px; height: 140px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset -6px -6px 0px rgba(0,0,0,0.15); }
+        .cassette-label { background-color: white; border: 3px solid #4a4a4a; width: 180px; height: 85px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: space-around; }
+        .cassette-wheels { display: flex; gap: 45px; background-color: #e0e0e0; padding: 5px 15px; border-radius: 20px; border: 2px solid #4a4a4a; }
+        .wheel { width: 25px; height: 25px; background-color: #4a4a4a; border-radius: 50%; border: 4px dashed #fff; }
+        .crt-monitor { background-color: #dedede; border: 4px solid #4a4a4a; border-radius: 20px 20px 10px 10px; padding: 15px 15px 25px 15px; width: 250px; box-shadow: inset -5px -5px 0px #b8b8b8; position: relative; }
+        .crt-screen { background-color: #0f1f11; border: 4px solid #7a7a7a; border-radius: 14px; height: 110px; color: #33ff33; font-size: 12px; font-weight: bold; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0px 0px 15px black; font-family: 'Courier New', monospace; }
+        .crt-button { width: 12px; height: 12px; background-color: #ff4444; border: 2px solid #4a4a4a; border-radius: 50%; position: absolute; bottom: 6px; right: 25px; }
+        .discman { background-color: #cdb4db; border: 4px solid #4a4a4a; width: 180px; height: 180px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        .discman-window { width: 115px; height: 115px; background-color: rgba(255, 255, 255, 0.25); border: 3px solid #4a4a4a; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .cd-disc { width: 95px; height: 95px; background: radial-gradient(circle, #4a4a4a 8%, #fff 10%, #e0aaff 30%, #9d4edd 50%, #fff 85%); border: 2px solid #4a4a4a; border-radius: 50%; }
+        .discman-screen { background-color: #aaccff; border: 2px solid #4a4a4a; font-size: 10px; font-weight: bold; padding: 3px 8px; position: absolute; bottom: 8px; border-radius: 4px; color: #112244; font-family: 'Courier New', monospace; }
         .controls { display: flex; gap: 15px; margin-top: 10px; }
-        .btn {
-            background-color: #fff;
-            border: 3px solid #4a4a4a;
-            padding: 10px 22px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            font-family: inherit;
-            border-radius: 8px;
-            box-shadow: 3px 3px 0px #4a4a4a;
-        }
+        .btn { background-color: #fff; border: 3px solid #4a4a4a; padding: 10px 22px; cursor: pointer; font-weight: bold; font-size: 14px; font-family: 'Courier New', monospace; border-radius: 8px; box-shadow: 3px 3px 0px #4a4a4a; }
         .btn:active { transform: translate(3px, 3px); box-shadow: 0px 0px 0px; }
-
         .playing .wheel { animation: spin 2.5s linear infinite; }
         .playing .cd-disc { animation: spin 0.8s linear infinite; }
         .playing .crt-button { background-color: #33ff33; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- ESTILO DO SOBRE MIM --- */
-        .card-container {
-            background-color: white;
-            border: 3px solid #4a4a4a;
-            border-radius: 12px;
-            padding: 25px;
-            max-width: 600px;
-            box-shadow: 5px 5px 0px #4a4a4a;
-            line-height: 1.6;
-        }
-
-        /* --- ESTILO DO CATALOGO DE DISCOS COM ROLAGEM LATERAL --- */
-        /* Container que permite deslizar para o lado */
-        .album-scroll-wrapper {
-            width: 100vw;
-            max-width: 100%;
-            overflow-x: auto;
-            padding: 40px 0;
-            display: flex;
-            justify-content: flex-start;
-            scrollbar-width: none; /* Esconde barra no Firefox */
-        }
-        
-        .album-scroll-wrapper::-webkit-scrollbar {
-            display: none; /* Esconde barra no Chrome/Edge */
-        }
-
-        .album-track {
-            display: flex;
-            gap: 100px; /* Espaço entre os discos */
-            padding-left: 10vw; /* Espaço inicial */
-            padding-right: 10vw; /* Espaço final */
-        }
-
-        /* Bloco de cada Post/Disco */
-        .album-item {
-            display: flex;
-            flex-direction: column;
-            width: 260px;
-        }
-
-        /* O truque do vinil deslizar */
-        .album-interactive-zone {
-            position: relative;
-            width: 240px;
-            height: 240px;
-            cursor: pointer;
-        }
-
-        /* Capa do disco (fica por cima) */
-        .album-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 240px;
-            height: 240px;
-            border-radius: 4px;
-            border: 3px solid #4a4a4a;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 5; /* Fica na frente */
-            box-sizing: border-box;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Capas com cores diferentes inspiradas na imagem */
+        /* --- FILERA DE DISCOS (BLOG) --- */
+        .album-scroll-wrapper { width: 100vw; max-width: 100%; overflow-x: auto; padding: 40px 0; display: flex; justify-content: flex-start; scrollbar-width: none; }
+        .album-scroll-wrapper::-webkit-scrollbar { display: none; }
+        .album-track { display: flex; gap: 100px; padding-left: 10vw; padding-right: 10vw; }
+        .album-item { display: flex; flex-direction: column; width: 260px; }
+        .album-interactive-zone { position: relative; width: 240px; height: 240px; cursor: pointer; }
+        .album-cover { position: absolute; top: 0; left: 0; width: 240px; height: 240px; border-radius: 4px; border: 3px solid #4a4a4a; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; box-sizing: border-box; color: white; text-align: center; padding: 20px; font-family: 'Courier New', monospace; }
         .cover-1 { background-color: #222; }
         .cover-2 { background-color: #f3f3f3; color: #4a4a4a !important; }
         .cover-3 { background-color: #c05c46; }
-
-        /* O Disco de Vinil Preto (escondido atrás) */
-        .vinyl-record {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 220px;
-            height: 220px;
-            background-color: #1a1a1a;
-            border-radius: 50%;
-            z-index: 4; /* Fica atrás da capa */
-            transition: transform 0.4s ease-out; /* Animação suave para sair */
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle, #333 4%, #111 5%, #1a1a1a 20%, #111 40%, #1a1a1a 60%, #111 80%, #222 100%);
-        }
-
-        .vinyl-center {
-            width: 45px;
-            height: 45px;
-            background-color: #fff;
-            border-radius: 50%;
-            border: 2px dashed #4a4a4a;
-        }
-
-        /* QUANDO PASSA O MOUSE: O vinil desliza para a direita! */
-        .album-interactive-zone:hover .vinyl-record {
-            transform: translateX(100px) rotate(90deg);
-        }
-
-        /* Textos do post abaixo do disco */
-        .album-meta {
-            margin-top: 20px;
-            width: 240px;
-        }
-
-        .album-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 0 0 5px 0;
-        }
-
-        .album-description {
-            font-size: 12px;
-            color: #666;
-            line-height: 1.4;
-            margin: 0;
-        }
+        .vinyl-record { position: absolute; top: 10px; left: 10px; width: 220px; height: 220px; background-color: #1a1a1a; border-radius: 50%; z-index: 4; transition: transform 0.4s ease-out; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #333 4%, #111 5%, #1a1a1a 20%, #111 40%, #1a1a1a 60%, #111 80%, #222 100%); }
+        .vinyl-center { width: 45px; height: 45px; background-color: #fff; border-radius: 50%; border: 2px dashed #4a4a4a; }
+        .album-interactive-zone:hover .vinyl-record { transform: translateX(100px) rotate(90deg); }
+        .album-meta { margin-top: 20px; width: 240px; }
+        .album-title { font-size: 18px; font-weight: bold; margin: 0 0 5px 0; }
+        .album-description { font-size: 12px; color: #666; line-height: 1.4; margin: 0; }
     </style>
 </head>
 <body>
 
-    <!-- Menu Superior -->
-    <nav class="navbar">
-        <a href="#home">♫ PLAYER</a>
-        <a href="#about">♡ SOBRE MIM</a>
-        <a href="#blog">📝 MEU BLOG</a>
-    </nav>
+    <!-- CABEÇALHO COMPLETO ESTILO EUGENE WAN -->
+    <header class="header-bar">
+        <div class="logo-area">
+            <!-- Um emoji fofinho simulando o mascote escondido do site dele -->
+            <span style="font-size: 24px;">🫣</span>
+            <div class="logo-text">
+                <span class="logo-title">Seu Nome Aqui</span>
+                <span class="logo-subtitle">Aspirante a Designer & Desenvolvedora</span>
+            </div>
+        </div>
+
+        <!-- MENU SUSPENSO INTERATIVO NO CANTO -->
+        <div class="nav-dropdown-container">
+            <div class="player-status-btn">
+                Jogando agora: <span class="bold" id="current-page-label">Início</span> ▾
+            </div>
+            <div class="dropdown-content">
+                <a href="#home" onclick="updateLabel('Início')">Casa</a>
+                <a href="#about" onclick="updateLabel('Sobre')">Sobre Mim</a>
+                <a href="#blog" onclick="updateLabel('Catálogo')">Catálogo / Blog</a>
+            </div>
+        </div>
+    </header>
 
     <!-- SEÇÃO 1: PLAYER -->
     <section id="home" class="section">
-        <h1>Meu Cantinho Retrô ♫</h1>
+        <h1 style="font-family: 'Courier New', monospace;">Meu Cantinho Retrô ♫</h1>
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('cassette-tab')">📼 Fita</button>
+            <button class="tab-btn active" onclick="switchTab('cassette-tab')"> Fita</button>
             <button class="tab-btn" onclick="switchTab('crt-tab')">📺 PC de Tubo</button>
             <button class="tab-btn" onclick="switchTab('cd-tab')">💿 Toca CDs</button>
         </div>
@@ -414,7 +276,7 @@
             <div id="cassette-tab" class="tab-content active">
                 <div class="cassette">
                     <div class="cassette-label">
-                        <span style="font-size: 12px; font-weight: bold;">EAT N SEE</span>
+                        <span style="font-size: 12px; font-weight: bold; font-family: 'Courier New', monospace;">EAT N SEE</span>
                         <div class="cassette-wheels"><div class="wheel"></div><div class="wheel"></div></div>
                     </div>
                 </div>
@@ -440,31 +302,44 @@
         </div>
     </section>
 
-    <!-- SEÇÃO 2: SOBRE MIM -->
+    <!-- SEÇÃO 2: SOBRE MIM (IGUAL À FOTO DA EUGENE WAN) -->
     <section id="about" class="section">
-        <h2>♡ Sobre Mim</h2>
-        <div class="card-container">
-            <p>Olá! Bem-vindo ao meu projeto pessoal. Criei esse espaço inspirado em grandes designers para testar interações fofas e layouts diferentes.</p>
-            <p>Role a tela mais um pouco para baixo e use a rodinha do mouse para navegar para o lado no meu catálogo de discos interativo!</p>
+        <div class="about-layout">
+            
+            <!-- Lado Esquerdo: Textos -->
+            <div class="about-text-side">
+                <h2 class="about-main-headline">criando experiências fofas,<br>apaixonada por design retrô.</h2>
+                
+                <div class="about-paragraphs">
+                    <p>Sou uma mente criativa com paixão por unir código, interatividade e estética visual. Adoro encontrar projetos incríveis na internet que me inspirem a recriar layouts dinâmicos e cheios de movimento.</p>
+                    <p>Este espaço nasceu como um pequeno desafio pessoal e acabou se tornando o meu playground oficial de testes, onde posso exercitar minhas ideias livremente no meu próprio ritmo.</p>
+                    <p>Se você também ama a nostalgia dos anos 90, interfaces clássicas e efeitos interativos que surpreendem o usuário, continue rolando a tela para baixo e veja meu catálogo de discos!</p>
+                </div>
+            </div>
+
+            <!-- Lado Direito: Foto de Perfil Redonda -->
+            <div class="about-image-side">
+                <!-- Coloquei uma imagem linda de nuvem em pixel art para ilustrar, você pode trocar pelo link da sua foto! -->
+                <img class="profile-circle" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Danielle" alt="Minha Foto de Perfil">
+            </div>
+
         </div>
     </section>
 
-    <!-- SEÇÃO 3: BLOG (Com efeito igual à imagem!) -->
+    <!-- SEÇÃO 3: BLOG (CAPAS DE DISCO) -->
     <section id="blog" class="section">
-        <h2>📝 Meu Blog (Catálogo de Discos)</h2>
+        <h2 style="font-size: 28px; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px;">Meu Catálogo de Pensamentos</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 30px;">Passe o mouse nos discos e use a rodinha para rolar para o lado</p>
         
         <div class="album-scroll-wrapper" id="albumWrapper">
             <div class="album-track">
                 
-                <!-- DISCO 1 (Post 1) -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-1">
                             <h3 style="font-size: 24px; margin: 0; font-family: sans-serif; font-weight: 900; letter-spacing: -1px;">papers 📄</h3>
                         </div>
-                        <div class="vinyl-record">
-                            <div class="vinyl-center"></div>
-                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
                     </div>
                     <div class="album-meta">
                         <p class="album-title">Primeiro Post!</p>
@@ -472,15 +347,12 @@
                     </div>
                 </div>
 
-                <!-- DISCO 2 (Post 2) -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-2">
                             <h3 style="font-size: 28px; margin: 0; font-weight: bold; font-family: serif;">ew.</h3>
                         </div>
-                        <div class="vinyl-record">
-                            <div class="vinyl-center"></div>
-                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
                     </div>
                     <div class="album-meta">
                         <p class="album-title">Estética Retrô</p>
@@ -488,15 +360,12 @@
                     </div>
                 </div>
 
-                <!-- DISCO 3 (Post 3) -->
                 <div class="album-item">
                     <div class="album-interactive-zone">
                         <div class="album-cover cover-3">
                             <h3 style="font-size: 26px; margin: 0; font-family: 'Georgia', serif; font-weight: normal; letter-spacing: 2px;">TOVA</h3>
                         </div>
-                        <div class="vinyl-record">
-                            <div class="vinyl-center"></div>
-                        </div>
+                        <div class="vinyl-record"><div class="vinyl-center"></div></div>
                     </div>
                     <div class="album-meta">
                         <p class="album-title">Novas Inspirações</p>
@@ -511,7 +380,12 @@
     <script>
         let isPlaying = false;
 
-        // Script para fazer a rodinha do mouse rolar PARA O LADO na seção de discos
+        // Atualiza o texto do menu suspenso ao clicar
+        function updateLabel(text) {
+            document.getElementById('current-page-label').innerText = text;
+        }
+
+        // Script de Rolagem Lateral com a rodinha do mouse
         const scrollContainer = document.getElementById('albumWrapper');
         scrollContainer.addEventListener('wheel', (evt) => {
             evt.preventDefault();
